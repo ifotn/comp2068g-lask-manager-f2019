@@ -6,7 +6,7 @@ var logger = require('morgan');
 
 var indexRouter = require('./controllers/index');
 var usersRouter = require('./controllers/users');
-// add new tasks controller (lesson 5)
+// add.hbs new tasks controller (lesson 5)
 const tasksRouter = require('./controllers/tasks')
 
 var app = express();
