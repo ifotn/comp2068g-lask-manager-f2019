@@ -1,0 +1,31 @@
+<h1>Task Details</h1>
+
+<form method="post">
+    <fieldset class="form-group">
+        <label class="control-label col-md-2">Name: *</label>
+        <input name="name" id="name" required value="{{ task.name }}" />
+    </fieldset>
+    <fieldset class="form-group">
+        <label class="control-label col-md-2">Priority: *</label>
+        <select name="priority" id="priority">
+            <script>
+                for (var i = 1; i <= 5; i++) {
+
+                }
+            </script>
+            {{#each task.priorities}}
+                <option>{{this}}</option>
+            {{/each}}
+        </select>
+    </fieldset>
+    <fieldset>
+        <label class="control-label col-md-2">Complete: </label>
+        {{#if task.complete}}
+            <input type="checkbox" id="complete" name="complete" checked="checked" />
+        {{else}}
+            <input type="checkbox" id="complete" name="complete" />
+        {{/if}}
+    </fieldset>
+    <input type="hidden" name="_id" id="_id" value="{{task._id}}" />
+    <button class="col-md-offset-2 btn btn-primary">Save</button>
+</form>

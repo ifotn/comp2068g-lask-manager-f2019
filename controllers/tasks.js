@@ -62,5 +62,24 @@ router.get('/delete/:_id', (req, res, next) => {
     })
 })
 
+/* GET tasks/edit/abc - populate edit form w/existing task values */
+router.get('/edit/:_id', (req, res, next) => {
+    // store the _id parameter in a local variable
+    var _id = req.params._id
+
+    // use the selected id to look up the matching document
+    Task.findById(_id, (err, task) => {
+        if (err) {
+            console.log(err)
+            res.end(err)
+        }
+        else {
+            res.render('tasks/edit', {
+                task: task
+            })
+        }
+    })
+})
+
 // make controller public
 module.exports = router
