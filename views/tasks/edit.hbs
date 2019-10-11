@@ -9,13 +9,24 @@
         <label class="control-label col-md-2">Priority: *</label>
         <select name="priority" id="priority">
             <script>
+                // reference the select element
+                var priority = document.getElementById('priority')
                 for (var i = 1; i <= 5; i++) {
+                    // create a new option inside the select element
+                    var option = document.createElement('option')
 
+                    // display the current counter as the new option text
+                    option.innerHTML = i.toString()
+
+                    // if the new option matches the task priority, mark this option as selected
+                    if ({{task.priority}} == i.toString()) {
+                        option.selected = true
+                    }
+
+                    // add the new <option> element to the <select> object
+                    priority.append(option)
                 }
             </script>
-            {{#each task.priorities}}
-                <option>{{this}}</option>
-            {{/each}}
         </select>
     </fieldset>
     <fieldset>

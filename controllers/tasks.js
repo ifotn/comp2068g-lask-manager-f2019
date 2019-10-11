@@ -81,5 +81,36 @@ router.get('/edit/:_id', (req, res, next) => {
     })
 })
 
+/* POST tasks/edit/abc - save update to selected task */
+router.post('/edit/:_id', (req, res, next) => {
+    var _id = req.params._id
+
+    // parse checkbox to a boolean
+    var complete = false
+    if (req.body.complete == "on") {
+        complete = true
+    }
+    //console.log('Complete: ' + req.body.complete)
+
+    // instantiate a Task object with the new values from the form submission
+    var task = new Task({
+        _id: _id,
+        name: req.body.name,
+        priority: req.body.priority,
+        complete: complete
+    })
+
+    // update the document with the selected id, passing in our new task object to replace the old vals
+    Task.updateOne({ _id: _id }, task, (err) => {
+        if (err) {
+            console.log(err)
+            res.end(err)
+        }
+        else {
+            res.redirect('/tasks')
+        }
+    })
+})
+
 // make controller public
 module.exports = router
