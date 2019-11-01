@@ -9,6 +9,11 @@ var usersRouter = require('./controllers/users');
 // add.hbs new tasks controller (lesson 5)
 const tasksRouter = require('./controllers/tasks')
 
+// refs for auth
+const passport = require('passport')
+const session = require('express-session')
+//const localStrategy = require('passport-local').Strategy
+
 var app = express();
 
 // db.  try to connect and log a result (success / failure)
@@ -25,6 +30,26 @@ mongoose.connect(globals.db, {
 ).catch(() => {
   console.log('Connection error')
 })
+
+// passport initialization
+// 1. configure app to manage sessions
+app.use(session({
+    secret: 'f19T@skManagerSecret',
+    resave: true,
+    saveUninitialized: false
+}))
+
+// 2. set up passport
+app.use(passport.initialize())
+app.use(passport.session())
+
+// 3. link passport to our User model
+const User = require('./models/user')
+passport.use(User.createStrategy())
+
+// 4. set up passport to read / write user data to the session object
+passport.serializeUser(User.serializeUser())
+passport.deserializeUser(User.deserializeUser())
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
