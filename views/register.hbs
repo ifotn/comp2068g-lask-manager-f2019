@@ -11,10 +11,11 @@
     </fieldset>
     <fieldset class="form-group">
         <label for="confirm" class="col-sm-2 control-label">Confirm: *</label>
-        <input name="confirm" id="confirm" type="password" required pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" />
+        <input name="confirm" id="confirm" type="password" required onkeyup="return comparePasswords()" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" />
+        <span id="pwMsg"></span>
     </fieldset>
     <fieldset class="form-group">
-        <button class="btn btn-success offset-2">Register</button>
+        <button class="btn btn-success offset-2" onclick="return comparePasswords()">Register</button>
         <hr />
         Already have an account?  <a href="/login" title="Login">Login</a>
     </fieldset>

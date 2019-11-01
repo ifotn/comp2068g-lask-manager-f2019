@@ -10,13 +10,17 @@ const User = require('../models/user')
 
 /* GET home page. */
 router.get('/', (req, res, next) => {
-  res.render('index', { title: 'Task Manager' });
+  res.render('index', {
+    title: 'Task Manager',
+    user: req.user
+  });
 });
 
 /* GET /about */
 router.get('/about', (req, res, next) => {
   res.render('about', {
-    message: 'Content from the controller goes here'
+    message: 'Content from the controller goes here',
+    user: req.user
   })
 })
 
@@ -65,6 +69,13 @@ router.post('/login', passport.authenticate('local', {
   failureRedirect: '/login',
   failureMessage: 'Invalid Login'
 }))
+
+/* GET /logout */
+router.get('/logout', (req, res, next) => {
+  // call passport's built-in logout method
+  req.logout()
+  res.redirect('/login')
+})
 
 // expose this file as public
 module.exports = router;

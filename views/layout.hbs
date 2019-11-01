@@ -25,15 +25,28 @@
               <li class="nav-item">
                   <a class="nav-link" href="/about">About</a>
               </li>
-              <li class="nav-item">
-                  <a class="nav-link" href="/tasks">Tasks</a>
-              </li>
-              <li class="nav-item">
-                  <a class="nav-link" href="/register">Register</a>
-              </li>
-              <li class="nav-item">
-                  <a class="nav-link" href="/login">Login</a>
-              </li>
+              {{#if user}}
+                  <li class="nav-item">
+                      <a class="nav-link" href="/tasks">Tasks</a>
+                  </li>
+              {{/if}}
+          </ul>
+          <ul class="navbar-nav ml-auto">
+              {{#if user}}
+                  <li class="nav-item">
+                      <a class="nav-link">{{user.username}}</a>
+                  </li>
+                  <li class="nav-item">
+                      <a class="nav-link" href="/logout">Logout</a>
+                  </li>
+              {{else}}
+                  <li class="nav-item">
+                      <a class="nav-link" href="/register">Register</a>
+                  </li>
+                  <li class="nav-item">
+                      <a class="nav-link" href="/login">Login</a>
+                  </li>
+              {{/if}}
           </ul>
       </div>
   </nav>
