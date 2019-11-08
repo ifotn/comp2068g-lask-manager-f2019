@@ -51,6 +51,47 @@ passport.use(User.createStrategy())
 passport.serializeUser(User.serializeUser())
 passport.deserializeUser(User.deserializeUser())
 
+// Google Auth
+const GoogleStrategy = require('passport-google-oauth20').Strategy
+
+passport.use(new GoogleStrategy({
+    clientID: globals.ids.google.clientID,
+    clientSecret: globals.ids.google.clientSecret,
+    callbackURL: globals.ids.google.callbackURL
+},
+    (token, tokenSecret, profile, done) => {
+        // do we already have a User document in MongoDB for this Google profile?
+        User.findOne({oauthId: profile.id}, (err, user) => {
+            if (err) {
+                console.log(err) // error, so stop and debug
+            }
+            if (!err && user != null) {
+                // Google already exists in our MongoDB so just return the user object
+                done(null, user)
+            }
+            else {
+                // Google user is new, register them in MongoDB users collection
+                user = new User({
+                    oauthId: profile.id,
+                    username: profile.displayName,
+                    oauthProvider: 'Google',
+                    created: Date.now()
+                })
+
+                user.save((err) => {
+                    if (err) {
+                        console.log(err)
+                    }
+                    else {
+                        done(null, user)
+                    }
+                })
+            }
+        })
+    }
+))
+
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
