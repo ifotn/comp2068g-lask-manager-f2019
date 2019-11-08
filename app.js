@@ -91,6 +91,45 @@ passport.use(new GoogleStrategy({
     }
 ))
 
+// Facebook Auth
+const FacebookStrategy = require('passport-facebook').Strategy
+
+passport.use(new FacebookStrategy({
+        clientID: globals.ids.facebook.clientID,
+        clientSecret: globals.ids.facebook.clientSecret,
+        callbackURL: globals.ids.facebook.callbackURL
+    },
+    (token, tokenSecret, profile, done) => {
+        // do we already have a User document in MongoDB for this Facebook profile?
+        User.findOne({oauthId: profile.id}, (err, user) => {
+            if (err) {
+                console.log(err) // error, so stop and debug
+            }
+            if (!err && user != null) {
+                // Facebook already exists in our MongoDB so just return the user object
+                done(null, user)
+            }
+            else {
+                // Facebook user is new, register them in MongoDB users collection
+                user = new User({
+                    oauthId: profile.id,
+                    username: profile.displayName,
+                    oauthProvider: 'Facebook',
+                    created: Date.now()
+                })
+
+                user.save((err) => {
+                    if (err) {
+                        console.log(err)
+                    }
+                    else {
+                        done(null, user)
+                    }
+                })
+            }
+        })
+    }
+))
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

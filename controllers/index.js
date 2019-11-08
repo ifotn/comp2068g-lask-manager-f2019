@@ -93,5 +93,19 @@ router.get('/google/callback', passport.authenticate('google', {
       res.redirect('/tasks')
     })
 
+/* GET /facebook */
+// check if the user is already logged in with Facebook; if not invoke Facebook Signin
+router.get('/facebook', passport.authenticate('facebook'),
+    (req, res, next) => {}
+)
+
+/* GET /facebook/callback */
+router.get('/facebook/callback', passport.authenticate('facebook', {
+      failureRedirect: '/login'
+    }),
+    (req, res, next) => {
+      res.redirect('/tasks')
+    })
+
 // expose this file as public
 module.exports = router;
