@@ -18,6 +18,8 @@ function comparePasswords() {
     }
     else {
         pwMsg.innerText = ""
-        return true
+        alert(pw1)
+        alert(pw2)
+        return false
     }
 }
